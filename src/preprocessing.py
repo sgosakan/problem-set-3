@@ -37,16 +37,20 @@ def process_data(model_pred_df, genres_df):
     #list of genres
     genre_list = genres_df['genre'].tolist()
     
+    #initialize dictionaries
     genre_true_counts = {genre: 0 for genre in genre_list}
     genre_tp_counts = {genre: 0 for genre in genre_list}
     genre_fp_counts = {genre: 0 for genre in genre_list}
     
+    #convert string of lists
     model_pred_df['actual genres'] = model_pred_df['actual genres'].apply(lambda x: eval(x))
 
+    #iterate over each row in model_pred df
     for _, row in model_pred_df.iterrows():
         true_genres = row['actual genres']
         predicted_genres = [row['predicted']]
-        
+    
+        #count based on true genre
         for genre in genre_list:
             if genre in true_genres:
                 genre_true_counts[genre] += 1
